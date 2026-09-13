@@ -80,7 +80,7 @@ typedef struct {
 
 static auth_state_t auth_states[AUTH_STATE_SLOTS];
 
-static int srtla_rec_main(int argc, char **argv);
+int srtla_rec_main(int argc, char **argv);
 
 static uint16_t read_be16(const unsigned char *p) {
   uint16_t v;
