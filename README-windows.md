@@ -36,6 +36,37 @@ Example:
 srtla_rec.exe 5000 127.0.0.1 5002
 ```
 
+### Stream ID authentication
+
+This fork can require the incoming SRT Stream ID before allowing the SRT
+conclusion handshake to reach the local listener. This is useful when the SRTLA
+UDP port is exposed to the public internet and you do not want an unknown sender
+to publish simply by knowing the IP address and port.
+
+Set the same secret in Moblin's **Stream ID** field and on the receiver:
+
+```batch
+srtla_rec.exe 7000 127.0.0.1 5002 --stream-id "YOUR_LONG_RANDOM_SECRET" --log-errors
+```
+
+You can also keep the secret out of the command-line arguments by using the
+environment variable:
+
+```batch
+set SRTLA_STREAM_ID=YOUR_LONG_RANDOM_SECRET
+srtla_rec.exe 7000 127.0.0.1 5002 --log-errors
+```
+
+When authentication is enabled:
+- SRT induction packets are allowed so the normal cookie exchange can happen.
+- The HSv5 conclusion packet must contain a Stream ID matching the configured value.
+- A missing or incorrect Stream ID is rejected and the SRTLA connection group is closed.
+- After successful authentication, normal SRT traffic is forwarded unchanged.
+- If neither `--stream-id` nor `SRTLA_STREAM_ID` is set, behavior stays backward-compatible and no Stream ID check is performed.
+
+The Stream ID is a shared secret used for access control; it is **not encryption**.
+Use a long random value and avoid reusing an important password.
+
 ### Sender Mode (srtla_send)
 ```batch
 srtla_send.exe [listen_port] [srtla_host] [srtla_port] [source_ips_file]
