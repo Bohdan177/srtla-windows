@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up MinGW
+        uses: bwoodsend/setup-winlibs-action@v1
+        with:
+          architecture: x86_64
+      - name: Build
+        shell: cmd
+        run: mingw32-make
+      - name: Show receiver version
+        shell: cmd
+        run: srtla_rec.exe -v
+      - name: Upload receiver
+        uses: actions/upload-artifact@v4
+        with:
+          name: srtla-rec-windows
+          path: srtla_rec.exe
+          if-no-files-found: error
