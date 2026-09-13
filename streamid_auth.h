@@ -29,5 +29,6 @@ int streamid_auth_connect(streamid_socket_t sock, const struct sockaddr *name, i
 ssize_t streamid_auth_send(streamid_socket_t sock, const void *buf, size_t len, int flags);
 int streamid_auth_connect(streamid_socket_t sock, const struct sockaddr *name, socklen_t namelen);
 #endif
+int streamid_auth_close(streamid_socket_t sock);
 
 #endif /* STREAMID_AUTH_H */
