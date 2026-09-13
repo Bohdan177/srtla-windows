@@ -8,16 +8,14 @@ on:
   pull_request:
 
 jobs:
-  linux:
+  linux-auth-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build
-        run: make
       - name: Stream ID authentication tests
         run: gcc -O2 -Wall -Wextra -I. tests/test_streamid_auth.c streamid_auth.c -o test_streamid_auth && ./test_streamid_auth
 
-  windows:
+  windows-build:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
