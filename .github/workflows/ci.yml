@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - stream-id-auth
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: make
+      - name: Stream ID authentication tests
+        run: gcc -O2 -Wall -Wextra -I. tests/test_streamid_auth.c streamid_auth.c -o test_streamid_auth && ./test_streamid_auth
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up MinGW
+        uses: bwoodsend/setup-winlibs-action@v1
+        with:
+          architecture: x86_64
+      - name: Build Windows binaries
+        shell: cmd
+        run: mingw32-make
+      - name: Show receiver help
+        shell: cmd
+        run: srtla_rec.exe --help-stream-id
