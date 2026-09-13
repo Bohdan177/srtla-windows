@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up MinGW
+        uses: bwoodsend/setup-winlibs-action@v1
+        with:
+          architecture: x86_64
+      - name: Build
+        shell: cmd
+        run: mingw32-make
+      - name: Show receiver usage
+        shell: cmd
+        run: srtla_rec.exe -v
+
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: make
+      - name: Show receiver version
+        run: ./srtla_rec -v
