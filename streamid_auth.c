@@ -209,6 +209,15 @@ int streamid_auth_connect(streamid_socket_t sock, const struct sockaddr *name, s
   return connect(sock, name, namelen);
 }
 
+int streamid_auth_close(streamid_socket_t sock) {
+  forget_socket(sock);
+#ifdef _WIN32
+  return closesocket(sock);
+#else
+  return close(sock);
+#endif
+}
+
 #ifdef _WIN32
 int streamid_auth_send(streamid_socket_t sock, const char *buf, int len, int flags) {
   if (!auth_is_enabled) return send(sock, buf, len, flags);
