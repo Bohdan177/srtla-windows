@@ -19,15 +19,12 @@ jobs:
       - name: Build
         shell: cmd
         run: mingw32-make
-      - name: Show receiver usage
+      - name: Show receiver version
         shell: cmd
         run: srtla_rec.exe -v
-
-  linux:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build
-        run: make
-      - name: Show receiver version
-        run: ./srtla_rec -v
+      - name: Upload receiver
+        uses: actions/upload-artifact@v4
+        with:
+          name: srtla-rec-windows
+          path: srtla_rec.exe
+          if-no-files-found: error
