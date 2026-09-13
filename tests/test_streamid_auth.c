@@ -59,7 +59,7 @@ static size_t build_conclusion(unsigned char *pkt, size_t cap, const char *sid, 
 }
 
 static void close_pair(int sv[2]) {
-  close(sv[0]);
+  streamid_auth_close(sv[0]);
   close(sv[1]);
 }
 
